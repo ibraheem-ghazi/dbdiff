@@ -1,0 +1,29 @@
+{
+    "name": "ibraheem-ghazi/dbdiff",
+    "description": "php based script that helps developers to find the difference between two databases structure and compare it with auto generating queries",
+    "keywords": ["php", "database","mysql","compare","difference"],
+    "type": "library",
+    "license": "MIT",
+    "minimum-stability": "dev",
+    "authors": [
+        {
+            "name": "Ibraheem Ghazi Alnabriss"
+        }
+    ],
+    "require": {
+        "php": ">=5.6.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "~4.0|~5.0"
+    },
+    "autoload": {
+        "psr-4": {
+            ":vendor\\:package_name\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            ":vendor\\:package_name\\": "tests/"
+        }
+    }
+}
