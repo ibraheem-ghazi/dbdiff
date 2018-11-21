@@ -1,6 +1,5 @@
 # DBDiff (Database Differenece Compare)
 
-[![Build Status](https://travis-ci.org/ibraheem-ghazi/dbdiff.svg?branch=master)](https://travis-ci.org/ibraheem-ghazi/dbdiff)
 
 DBDiff is a php based script that helps developers to find the difference between two databases structure,catch new added columns, deleted columns, changed columns and which attributes are changed, and so on, with queries generate like (ALTER,CREATE ...etc)
 
