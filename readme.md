@@ -6,7 +6,7 @@ DBDiff is a php based script that helps developers to find the difference betwee
 # Screenshots
 ![dbdiff queries](https://raw.githubusercontent.com/ibraheem-ghazi/dbdiff/master/screenshots/dbdiff-queries.png)
 ![dbdiff results](https://raw.githubusercontent.com/ibraheem-ghazi/dbdiff/master/screenshots/dbdiff-results.png)
-![dbdiff constraints](https://raw.githubusercontent.com/ibraheem-ghazi/dbdiff/master/screenshots/dbdiff-constraints.png)
+![dbdiff constraints](https://raw.githubusercontent.com/ibraheem-ghazi/dbdiff/master/screenshots/dbdiff-constraints.PNG)
 
 
 # Features
