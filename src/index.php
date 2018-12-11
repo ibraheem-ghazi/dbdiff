@@ -11,6 +11,7 @@ require 'SqlDumper.class.php';
 
 use \App\Libraries\SqlDumper;
 
+
 if(isset($_GET['source']) && $_GET['source']==='1'){ echo print_r(SqlDumper::dumpStructure($old_structure_conn)) ; die();}
 if(isset($_GET['source']) && $_GET['source']==='2'){ echo print_r(SqlDumper::dumpStructure($new_structure_conn)) ; die();}
 
@@ -78,7 +79,19 @@ foreach($old_structure_dump as $table=>$columns){
         preg_match('/`'.$column.'` (.*),/m',$tbl_create,$output);
         echo "<code>ALTER TABLE $table MODIFY COLUMN $column {$output[1]};</code>";
     }
-    echo '</div>';
+	
+	
+	
+    
+    $const_queries = SqlDumper::diffConstraintsWithQueries($new_structure_conn,$old_structure_conn,$table);
+    if($const_queries){
+        echo '<div class="constraints"><small>CONSTRAINTS: </small>';
+        foreach($const_queries as $query){
+            echo '<code>'.$query.'</code>';
+        }
+        echo '</div>';//end-of-constraint-div
+    }
+    echo '</div>';//end-of-table-div
 }
 
 //new tables

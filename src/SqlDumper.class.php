@@ -12,6 +12,12 @@ use \PDO;
 class SqlDumper
 {
 	
+	protected static $patterns = [
+		'primary'=>'(^[^`]\s*PRIMARY KEY .*[,]?$)',
+		'key'=>'(^[^`]\s*KEY\s+(`.*`) .*[,]?$)',
+		'constraint'=>'(^[^`]\s*CONSTRAINT\s+(`.*`) .*[,]?$)',
+	];
+	
 	/**
 	 * export create table query for all tables [tables only, no constraints, PK, Fk, ...etc]
 	 * @Unused 
@@ -90,5 +96,40 @@ class SqlDumper
 			}
 		}
 		return !isset($difference) ? 0 : $difference;
+	}
+
+	public static function diffConstraintsWithQueries($new_connection,$old_connection,$table){
+	    $new_const = static::getConstraints($new_connection,$table);
+	    $old_const = static::getConstraints($old_connection,$table);
+	    $diff_queries = [];
+	    foreach(static::array_diff_assoc_recursive($new_const,$old_const)?:[] as $diff_const){
+	       if(in_array($diff_const,$new_const) && !in_array($diff_const,$old_const)){
+	           $diff_queries[]= static::getConstraintQuery($diff_const,$table)['add'];
+	       }elseif(!in_array($diff_const,$new_const) && in_array($diff_const,$old_const)){
+	           $diff_queries[]= static::getConstraintQuery($diff_const,$table)['drop'];
+	       }
+	    }
+	    return $diff_queries;
+	}
+	
+		public static function getConstraints($connection,$table){
+		$create_query = static::showCreate($connection,$table);
+		preg_match_all('/'.implode('|',static::$patterns).'/m',$create_query,$constraints);
+		$consrt =array_map('trim',$constraints[0]);
+		sort($consrt);
+		return $consrt;
+	}
+	
+	public static function getConstraintQuery($constraint,$table){
+		foreach (static::$patterns as $key=>$pattern){
+			if(preg_match("/".str_replace('^[^`]','',$pattern)."$/m",$constraint,$matches)){
+				switch($key){
+					case 'primary': return ['drop'=>'ALTER TABLE '.$table.' DROP PRIMARY KEY;','add'=>'ALTER TABLE '.$table.' ADD '.rtrim($constraint,',').';'];
+					case 'key': return ['drop'=>"ALTER TABLE {$table} DROP KEY $matches[2];",'add'=>'ALTER TABLE '.$table.' ADD '.rtrim($constraint,',').';'];
+					case 'constraint': return ['drop'=>"ALTER TABLE {$table} DROP CONSTRAINT $matches[2];",'add'=>'ALTER TABLE '.$table.' CONSTRAINT '.rtrim($constraint,',').';'];
+				}
+				break;
+			}
+		}
 	}
 }
