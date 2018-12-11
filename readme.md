@@ -27,7 +27,7 @@ after long search for scripts to use all solution was executing `mysqldump` syst
 - [X] Handle Create Tables
 - [X] Handle Alter Tables
 - [ ] Handle Drop table Queries
-- [ ] Handle constraints (PK,FK,index, ... etc)
+- [X] Handle constraints (PK,FK,index, ... etc)
 - [ ] Handle events
 - [ ] Handle functions
 - [ ] Handle procedures
